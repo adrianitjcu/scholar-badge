@@ -5,7 +5,7 @@ import datetime
 
 # ---- CONFIG ----
 SERPAPI_KEY = os.environ["SERPAPI_KEY"]
-SCHOLAR_ID = "YOUR_GOOGLE_SCHOLAR_ID"
+SCHOLAR_ID = "DDRMDg4AAAAJ"
 OUTPUT = "badge.png"
 
 WIDTH, HEIGHT = 800, 200
