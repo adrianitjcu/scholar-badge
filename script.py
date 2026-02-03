@@ -1,9 +1,11 @@
-from scholarly import scholarly
+import os
+import requests
 from PIL import Image, ImageDraw, ImageFont
 import datetime
 
 # ---- CONFIG ----
-SCHOLAR_ID = "DDRMDg4AAAAJ"
+SERPAPI_KEY = os.environ["SERPAPI_KEY"]
+SCHOLAR_ID = "YOUR_GOOGLE_SCHOLAR_ID"
 OUTPUT = "badge.png"
 
 WIDTH, HEIGHT = 800, 200
@@ -11,13 +13,22 @@ BG_COLOR = (15, 15, 15)
 TEXT_COLOR = (235, 235, 235)
 ACCENT = (90, 180, 255)
 
-# ---- FETCH DATA ----
-author = scholarly.search_author_id(SCHOLAR_ID)
-author = scholarly.fill(author)
+# ---- FETCH DATA (SerpAPI) ----
+params = {
+    "engine": "google_scholar_author",
+    "author_id": SCHOLAR_ID,
+    "api_key": SERPAPI_KEY
+}
 
-citations = author.get("citedby", 0)
-hindex = author.get("hindex", 0)
-i10 = author.get("i10index", 0)
+resp = requests.get("https://serpapi.com/search.json", params=params, timeout=10)
+resp.raise_for_status()
+data = resp.json()
+
+author = data.get("author", {})
+
+citations = author.get("cited_by", {}).get("total", 0)
+hindex = author.get("h_index", 0)
+i10 = author.get("i10_index", 0)
 
 # ---- IMAGE ----
 img = Image.new("RGB", (WIDTH, HEIGHT), BG_COLOR)
@@ -40,7 +51,7 @@ draw.text((300, 120), "h-index", fill=TEXT_COLOR, font=font_small)
 draw.text((520, 60), f"{i10}", fill=TEXT_COLOR, font=font_big)
 draw.text((520, 120), "i10-index", fill=TEXT_COLOR, font=font_small)
 
-timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d")
 draw.text((WIDTH - 200, HEIGHT - 30), f"Updated {timestamp}", fill=(140,140,140), font=font_small)
 
 img.save(OUTPUT)
