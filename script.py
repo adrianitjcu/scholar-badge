@@ -24,11 +24,20 @@ resp = requests.get("https://serpapi.com/search.json", params=params, timeout=10
 resp.raise_for_status()
 data = resp.json()
 
+import json
+print(json.dumps(data, indent=2))
+
 author = data.get("author", {})
 
-citations = author.get("cited_by", {}).get("total", 0)
+citations = 0
+cited_by = author.get("cited_by", {})
+table = cited_by.get("table", [])
+if table and "citations" in table[0]:
+    citations = table[0]["citations"].get("all", 0)
+
 hindex = author.get("h_index", 0)
 i10 = author.get("i10_index", 0)
+
 
 # ---- IMAGE ----
 img = Image.new("RGB", (WIDTH, HEIGHT), BG_COLOR)
