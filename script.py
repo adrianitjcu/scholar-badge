@@ -56,7 +56,7 @@ draw.text((300, 120), "h-index", fill=TEXT_COLOR, font=font_small)
 draw.text((520, 60), f"{i10}", fill=TEXT_COLOR, font=font_big)
 draw.text((520, 120), "i10-index", fill=TEXT_COLOR, font=font_small)
 
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d")
-draw.text((WIDTH - 200, HEIGHT - 30), f"Updated {timestamp}", fill=(140,140,140), font=font_small)
+timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+draw.text((WIDTH - 300, HEIGHT - 30), f"Updated {timestamp}", fill=(140,140,140), font=font_small)
 
 img.save(OUTPUT)
