@@ -25,7 +25,7 @@ resp.raise_for_status()
 data = resp.json()
 
 author = data.get("author", {})
-cited_by = author.get("cited_by", {})
+cited_by = data.get("cited_by", {})
 table = cited_by.get("table", [])
 
 # citations
@@ -34,10 +34,6 @@ citations = table[0]["citations"]["all"] if len(table) > 0 and "citations" in ta
 hindex = table[1]["h_index"]["all"] if len(table) > 1 and "h_index" in table[1] else 0
 # i10-index
 i10 = table[2]["i10_index"]["all"] if len(table) > 2 and "i10_index" in table[2] else 0
-
-print(citations)
-print(hindex)
-print(i10)
 
 # ---- IMAGE ----
 img = Image.new("RGB", (WIDTH, HEIGHT), BG_COLOR)
