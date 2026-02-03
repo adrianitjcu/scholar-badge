@@ -22,9 +22,11 @@ jobs:
           pip install -r requirements.txt
 
       - name: Generate badge
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: |
           python script.py
-
+          
       - name: Commit updated badge
         run: |
           git config user.name "github-actions"
