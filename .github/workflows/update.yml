@@ -2,7 +2,7 @@ name: Update Scholar Badge
 
 on:
   schedule:
-    - cron: "0 6 * * 1"   # every Monday
+    - cron: "0 12 * * *" 
   workflow_dispatch:
 
 jobs:
